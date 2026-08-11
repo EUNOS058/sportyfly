@@ -24,7 +24,16 @@ jobs:
           gradle-version: current
       - name: Create empty .env
         run: touch .env
+      - name: Generate debug keystore
+        run: |
+          keytool -genkey -v -keystore my-upload-key.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          cp my-upload-key.jks debug.keystore
       - name: Build debug APK
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/my-upload-key.jks
+          STORE_PASSWORD: android
+          KEY_ALIAS: androiddebugkey
+          KEY_PASSWORD: android
         run: gradle assembleDebug --stacktrace
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
