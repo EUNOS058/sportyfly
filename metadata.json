@@ -1,0 +1,6 @@
+{
+  "name": "SportyFly",
+  "description": "SportyFly Live TV & Sports Streaming Application",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
