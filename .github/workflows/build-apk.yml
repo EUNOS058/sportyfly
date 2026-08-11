@@ -24,18 +24,15 @@ jobs:
           gradle-version: 9.3.1
       - name: Create empty .env
         run: touch .env
-      - name: Generate debug keystore
+      - name: Generate debug keystores
         run: |
           keytool -genkey -v -keystore my-upload-key.jks -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          cp my-upload-key.jks debug.keystore
+          cp my-upload-key.jks app/debug.keystore
       - name: Build debug APK
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/my-upload-key.jks
           STORE_PASSWORD: android
           KEY_ALIAS: androiddebugkey
           KEY_PASSWORD: android
-        run: gradle assembleDebug --stacktrace
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sportyfly-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+
